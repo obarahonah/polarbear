@@ -64,4 +64,13 @@ public class player : MonoBehaviour
         body.MovePosition(Vector2.MoveTowards(from, to, time));
     }
 
+    void OnTriggerStay2D(Collider2D coll)
+    {
+        if (coll.gameObject.tag == "lethal")
+        {
+            Destroy(gameObject);
+            Debug.Log("agua");
+        }
+    }
+
 }
