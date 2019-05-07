@@ -13,6 +13,14 @@ public class penguin_behaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (gameObject.transform.parent!= null)
+        {
+            if (gameObject.transform.parent.tag == "ally")
+            {
+                gameObject.transform.position = gameObject.transform.parent.position;
+
+            }
+        }
+
     }
 }

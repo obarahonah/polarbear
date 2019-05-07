@@ -20,6 +20,8 @@ public class player : MonoBehaviour
     public GameObject gameOverPanel;
     public Text gameOverText;
 
+    public GameObject slot1;
+
     // Use this for initialization
     void Start()
     {
@@ -85,7 +87,7 @@ public class player : MonoBehaviour
         else if(tile.sprite == water)
         {
             Debug.Log(tile.sprite.ToString());
-            Destroy(gameObject);
+            gameOver();
         }
 
     }
@@ -116,13 +118,28 @@ public class player : MonoBehaviour
     {
         if (coll.tag != "ally") // si no es aliado
         {
-            Destroy(gameObject);
-            gameOverPanel.SetActive(true);
-            gameOverText.text = "Game Over";
+            Debug.Log(coll.tag);
+            Debug.Log(coll.name);
+            gameOver();
         }
         
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "ally")
+        {
+            collision.gameObject.transform.position = slot1.transform.position;
+
+            collision.gameObject.transform.parent = slot1.transform;
+        }
+    }
+
+    void gameOver() {
+        Destroy(gameObject);
+        gameOverPanel.SetActive(true);
+        gameOverText.text = "Game Over";
+    }
 
 
 }

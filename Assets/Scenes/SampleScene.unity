@@ -112,7 +112,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &237653643
+--- !u!1 &64792889
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,45 +120,28 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 237653644}
-  - component: {fileID: 237653645}
+  - component: {fileID: 64792890}
   m_Layer: 0
-  m_Name: Radius
+  m_Name: Penguin1
   m_TagString: ally
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &237653644
+--- !u!4 &64792890
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 237653643}
+  m_GameObject: {fileID: 64792889}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.676, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1357659891}
-  m_RootOrder: 0
+  m_Father: {fileID: 1000836546}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &237653645
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 237653643}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.01739873, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.6619448
 --- !u!1 &505777028
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,7 +391,7 @@ GameObject:
   - component: {fileID: 644733948}
   m_Layer: 0
   m_Name: Particle System (1)
-  m_TagString: Untagged
+  m_TagString: ally
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15515,6 +15498,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 644733947}
+  - {fileID: 64792890}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15533,11 +15517,12 @@ MonoBehaviour:
   speed: 2.5
   water: {fileID: 21300000, guid: 10c06d5b82258534d9bb6e90dbe70041, type: 3}
   ice: {fileID: 21300000, guid: 110cedb4206247940923fcfdba8b9bd9, type: 3}
-  cracket_ice_1: {fileID: 21300000, guid: 885d35a0c21e6ac40a3ae458540858fa, type: 3}
+  cracket_ice_1: {fileID: 21300000, guid: 25e9897e42e71db428135c4502ca4792, type: 3}
   cracket_ice_2: {fileID: 21300000, guid: a39ee62dbe534f74cbb900a85073a4ef, type: 3}
   tileMap: {fileID: 713010371}
   gameOverPanel: {fileID: 615121018}
   gameOverText: {fileID: 1885642786}
+  slot1: {fileID: 64792889}
 --- !u!50 &1000836548
 Rigidbody2D:
   serializedVersion: 4
@@ -15598,6 +15583,7 @@ GameObject:
   - component: {fileID: 1357659893}
   - component: {fileID: 1357659892}
   - component: {fileID: 1357659895}
+  - component: {fileID: 1357659894}
   m_Layer: 0
   m_Name: placeholder_pinguino
   m_TagString: ally
@@ -15661,10 +15647,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1357659889}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.528, y: -0.367, z: 0}
+  m_LocalPosition: {x: -4.528, y: -0.367, z: -0.1}
   m_LocalScale: {x: 0.45, y: 0.45, z: 1}
-  m_Children:
-  - {fileID: 237653644}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15675,7 +15660,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1357659889}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -15704,7 +15689,23 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
+--- !u!58 &1357659894
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357659889}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.036097635, y: 0.031187668}
+  serializedVersion: 2
+  m_Radius: 0.70991504
 --- !u!114 &1357659895
 MonoBehaviour:
   m_ObjectHideFlags: 0
