@@ -1,14 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Tilemaps;
 public class player : MonoBehaviour
 {
     public float speed;             //Floating point variable to store the player's movement speed.
-
     private Rigidbody2D rb2d;       //Store a reference to the Rigidbody2D component required to use 2D Physics.
     Animator animator;
     Vector2 target;
+    public Sprite water;
+    public Sprite ice;
+    public Tilemap tileMap;
 
     // Use this for initialization
     void Start()
@@ -55,22 +57,45 @@ public class player : MonoBehaviour
         MoveBody(rb2d, transform.position, target, Time.deltaTime*speed);
     }
 
-    
 
 
     void MoveBody(Rigidbody2D body, Vector2 from, Vector2 to, float time)
     {
         //body.MovePosition(Vector2.Lerp(from, to, time));
         body.MovePosition(Vector2.MoveTowards(from, to, time));
+        Vector3Int lPos = tileMap.WorldToCell(transform.position);
+        Tile tile = tileMap.GetTile<Tile>(lPos);
+
+        if (tile.sprite == ice)
+        {
+            Debug.Log(tile.sprite.ToString());
+            StartCoroutine(IceBreaker(lPos));
+        }
+        else if(tile.sprite == water)
+        {
+            Debug.Log(tile.sprite.ToString());
+            Destroy(gameObject);
+        }
+
     }
 
+    public IEnumerator IceBreaker(Vector3Int icePosition)
+    {
+        yield return new WaitForSeconds(1.5f);
+        Tile tile = ScriptableObject.CreateInstance<Tile>();
+        tile.sprite = water;
+        //icePosition.y -= 1;//it's one tile off from y
+        tileMap.SetTile(icePosition, tile);
+        //Tile tile = tileMap.GetTile<Tile>(icePosition);
+        //tile.sprite = water;
+        tileMap.RefreshAllTiles();
+    }
     void OnTriggerStay2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "lethal")
-        {
-            Destroy(gameObject);
-            Debug.Log("agua");
-        }
+        Destroy(gameObject);
+        
     }
+
+
 
 }
