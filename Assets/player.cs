@@ -63,26 +63,33 @@ public class player : MonoBehaviour
     {
         //body.MovePosition(Vector2.Lerp(from, to, time));
         body.MovePosition(Vector2.MoveTowards(from, to, time));
-        Vector3Int position = new Vector3Int(
-           Mathf.RoundToInt(transform.position.x),
-           Mathf.RoundToInt(transform.position.y),
-           Mathf.RoundToInt(0)
-       );
-        Tile tile = tileMap.GetTile<Tile>(position);
-        //transform.position = position;
+        Vector3Int lPos = tileMap.WorldToCell(transform.position);
+        Tile tile = tileMap.GetTile<Tile>(lPos);
+
         if (tile.sprite == ice)
         {
-            //tile.sprite = water;
-            //tileMap.RefreshTile(position);
             Debug.Log(tile.sprite.ToString());
+            StartCoroutine(IceBreaker(lPos));
         }
-        else
+        else if(tile.sprite == water)
         {
             Debug.Log(tile.sprite.ToString());
+            Destroy(gameObject);
         }
 
     }
 
+    public IEnumerator IceBreaker(Vector3Int icePosition)
+    {
+        yield return new WaitForSeconds(1.5f);
+        Tile tile = ScriptableObject.CreateInstance<Tile>();
+        tile.sprite = water;
+        //icePosition.y -= 1;//it's one tile off from y
+        tileMap.SetTile(icePosition, tile);
+        //Tile tile = tileMap.GetTile<Tile>(icePosition);
+        //tile.sprite = water;
+        tileMap.RefreshAllTiles();
+    }
     void OnTriggerStay2D(Collider2D coll)
     {
         Destroy(gameObject);
