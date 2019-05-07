@@ -2,15 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
+
 public class player : MonoBehaviour
 {
     public float speed;             //Floating point variable to store the player's movement speed.
     private Rigidbody2D rb2d;       //Store a reference to the Rigidbody2D component required to use 2D Physics.
     Animator animator;
     Vector2 target;
+    BoxCollider2D self_coll;
     public Sprite water;
     public Sprite ice;
+    public Sprite cracket_ice_1;
+    public Sprite cracket_ice_2;
     public Tilemap tileMap;
+
+    public GameObject gameOverPanel;
+    public Text gameOverText;
 
     // Use this for initialization
     void Start()
@@ -19,6 +27,7 @@ public class player : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         target = transform.position;
+        self_coll = GetComponent<BoxCollider2D>();
     }
 
     private void Update()
@@ -63,7 +72,8 @@ public class player : MonoBehaviour
     {
         //body.MovePosition(Vector2.Lerp(from, to, time));
         body.MovePosition(Vector2.MoveTowards(from, to, time));
-        Vector3Int lPos = tileMap.WorldToCell(transform.position);
+
+        Vector3Int lPos = tileMap.WorldToCell(self_coll.transform.position);
         Tile tile = tileMap.GetTile<Tile>(lPos);
 
         if (tile.sprite == ice)
@@ -71,6 +81,7 @@ public class player : MonoBehaviour
             Debug.Log(tile.sprite.ToString());
             StartCoroutine(IceBreaker(lPos));
         }
+
         else if(tile.sprite == water)
         {
             Debug.Log(tile.sprite.ToString());
@@ -81,18 +92,34 @@ public class player : MonoBehaviour
 
     public IEnumerator IceBreaker(Vector3Int icePosition)
     {
-        yield return new WaitForSeconds(1.5f);
         Tile tile = ScriptableObject.CreateInstance<Tile>();
-        tile.sprite = water;
-        //icePosition.y -= 1;//it's one tile off from y
+        yield return new WaitForSeconds(0.4f);
+        tile.sprite = cracket_ice_1;
         tileMap.SetTile(icePosition, tile);
-        //Tile tile = tileMap.GetTile<Tile>(icePosition);
-        //tile.sprite = water;
         tileMap.RefreshAllTiles();
+
+        
+        yield return new WaitForSeconds(0.4f);
+        tile.sprite = cracket_ice_2;
+        tileMap.SetTile(icePosition, tile);
+        tileMap.RefreshAllTiles();
+        
+        yield return new WaitForSeconds(0.4f);
+        tile.sprite = water;
+        tileMap.SetTile(icePosition, tile);
+        tileMap.RefreshAllTiles();
+        //tile.sprite = water;
+        //icePosition.y -= 1;//it's one tile off from y
+
     }
     void OnTriggerStay2D(Collider2D coll)
     {
-        Destroy(gameObject);
+        if (coll.tag != "ally") // si no es aliado
+        {
+            Destroy(gameObject);
+            gameOverPanel.SetActive(true);
+            gameOverText.text = "Game Over";
+        }
         
     }
 
