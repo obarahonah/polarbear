@@ -8,6 +8,7 @@ public class player : MonoBehaviour
 {
     public float speed;             //Floating point variable to store the player's movement speed.
     private Rigidbody2D rb2d;       //Store a reference to the Rigidbody2D component required to use 2D Physics.
+    private int penguinsn;
     Animator animator;
     Vector2 target;
     BoxCollider2D self_coll;
@@ -19,6 +20,9 @@ public class player : MonoBehaviour
 
     public GameObject gameOverPanel;
     public Text gameOverText;
+    public Text penguins;
+
+    public ParticleSystem vision;
 
     public GameObject slot1;
 
@@ -30,6 +34,7 @@ public class player : MonoBehaviour
         animator = GetComponent<Animator>();
         target = transform.position;
         self_coll = GetComponent<BoxCollider2D>();
+        penguinsn = 0;
     }
 
     private void Update()
@@ -116,7 +121,7 @@ public class player : MonoBehaviour
     }
     void OnTriggerStay2D(Collider2D coll)
     {
-        if (coll.tag != "ally") // si no es aliado
+        if (coll.tag != "ally" && coll.tag != "Player") // si no es aliado
         {
             Debug.Log(coll.tag);
             Debug.Log(coll.name);
@@ -129,9 +134,15 @@ public class player : MonoBehaviour
     {
         if (collision.tag == "ally")
         {
-            collision.gameObject.transform.position = slot1.transform.position;
+            penguinsn++;
+            actualizarHud(penguinsn);
 
+            collision.gameObject.transform.position = slot1.transform.position;
             collision.gameObject.transform.parent = slot1.transform;
+
+            collision.tag = "Player";
+            var shape = vision.shape;
+            shape.radius = shape.radius + 0.5f;
         }
     }
 
@@ -139,6 +150,10 @@ public class player : MonoBehaviour
         Destroy(gameObject);
         gameOverPanel.SetActive(true);
         gameOverText.text = "Game Over";
+    }
+
+    void actualizarHud(int num) {
+        penguins.text = "Penguins " + num;
     }
 
 
