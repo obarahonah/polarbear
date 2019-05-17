@@ -11,7 +11,7 @@ public class player : MonoBehaviour
     private int penguinsn;
     Animator animator;
     Vector2 target;
-    BoxCollider2D self_coll;
+    CircleCollider2D self_coll;
     public Sprite water;
     public Sprite ice;
     public Sprite cracket_ice_1;
@@ -25,7 +25,7 @@ public class player : MonoBehaviour
     public ParticleSystem vision;
 
     public GameObject slot1;
-
+    public GameObject slot2;
     // Use this for initialization
     void Start()
     {
@@ -33,7 +33,7 @@ public class player : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         target = transform.position;
-        self_coll = GetComponent<BoxCollider2D>();
+        self_coll = GetComponent<CircleCollider2D>();
         penguinsn = 0;
     }
 
@@ -58,11 +58,13 @@ public class player : MonoBehaviour
         {
             animator.SetFloat("walk_left", 0f);
             animator.SetFloat("walk_right", 0.1f);
+
         }
         if (target.x < transform.position.x)
         {
             animator.SetFloat("walk_right", 0f);
             animator.SetFloat("walk_left", -0.1f);
+
         }
         if (target.x==transform.position.x && target.y==transform.position.y)
         {
@@ -134,11 +136,16 @@ public class player : MonoBehaviour
     {
         if (collision.tag == "ally")
         {
+
+           
+                collision.gameObject.transform.position = slot1.transform.position;
+                collision.gameObject.transform.parent = slot1.transform;
+       
+           
             penguinsn++;
             actualizarHud(penguinsn);
 
-            collision.gameObject.transform.position = slot1.transform.position;
-            collision.gameObject.transform.parent = slot1.transform;
+
 
             collision.tag = "Player";
             var shape = vision.shape;
