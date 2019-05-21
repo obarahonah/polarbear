@@ -15587,9 +15587,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 211f39e84cddb42aba78c707c140c0d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 1
   bear: {fileID: 0}
   mindistance: 0
+  water: {fileID: 21300000, guid: 10c06d5b82258534d9bb6e90dbe70041, type: 3}
+  tileMap: {fileID: 713010371}
+  currentDir: Down
 --- !u!50 &757624640
 Rigidbody2D:
   serializedVersion: 4

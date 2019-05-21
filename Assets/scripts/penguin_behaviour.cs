@@ -63,8 +63,8 @@ public class penguin_behaviour : MonoBehaviour
 
     void MoveBody(Rigidbody2D body, Vector2 from, Vector2 to, float time)
     {
-        //body.MovePosition(Vector2.Lerp(from, to, time));
-        body.MovePosition(Vector2.MoveTowards(from, to, time));
+        body.MovePosition(Vector2.Lerp(from, to, time));
+        //body.MovePosition(Vector2.MoveTowards(from, to, time));
        
     }
 }
