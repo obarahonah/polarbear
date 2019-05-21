@@ -26,6 +26,8 @@ public class player : MonoBehaviour
 
     public GameObject slot1;
     public GameObject slot2;
+
+    private float invunerability;
     // Use this for initialization
     void Start()
     {
@@ -35,6 +37,7 @@ public class player : MonoBehaviour
         target = transform.position;
         self_coll = GetComponent<CircleCollider2D>();
         penguinsn = 0;
+        invunerability = 0;
     }
 
     private void Update()
@@ -44,6 +47,11 @@ public class player : MonoBehaviour
         {
             target = ray.origin;
         }
+        if (invunerability > 0) {
+            invunerability -= Time.deltaTime;
+            Debug.Log(invunerability);
+        }
+            
     }
 
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
@@ -131,7 +139,7 @@ public class player : MonoBehaviour
         }
         
     }
-
+    //COLLIDING WITH AN A PENGUIN, IT WILL ATTACK THE PENGUIN TO THE PLAYER GAMEOBJECT.
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "ally")
@@ -146,22 +154,49 @@ public class player : MonoBehaviour
             actualizarHud(penguinsn);
 
 
-
+            update_vision(true);
             collision.tag = "Player";
-            var shape = vision.shape;
-            shape.radius = shape.radius + 0.5f;
+
         }
     }
-
+    //DESTROY THE PLAYER GAMEOBJECT AND DISPLAY GAMEOVER MESSAGE
     void gameOver() {
         Destroy(gameObject);
         gameOverPanel.SetActive(true);
         gameOverText.text = "Game Over";
     }
-
+    //UPDATE HUD WITH THE NUMBER ON PENGUINS
     void actualizarHud(int num) {
         penguins.text = "Penguins " + num;
     }
+    //TAKE DAMAGE WHEN COLLIDING WITH A ENEMY, IF THERE ARE NO PENGUINS PLAYER DIE.
+    void takeDmg() {
+        if (penguinsn<=0 && invunerability<=0)
+            gameOver();
+        else if(invunerability<=0)
+        {
+            penguinsn--;
+            actualizarHud(penguinsn);
+            update_vision(false);
+            Destroy(slot1);
+            invunerability = 2f; // 3 segundos de invunerablidad al sufrir dano
+        }
+    }
+    // COLLISION WITH ENEMY
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "enemy")
+            takeDmg();
+        
 
-
+        Debug.Log("collision con enemigo");
+    }
+    // UPDATE RADIUS OF VISION, TRUE = INCREASE, FALSE = DECREASE
+    void update_vision(bool positive) {
+        var shape = vision.shape;
+        if(positive)
+            shape.radius = shape.radius + 0.5f;
+        else
+            shape.radius = shape.radius - 0.5f;
+    }
 }
