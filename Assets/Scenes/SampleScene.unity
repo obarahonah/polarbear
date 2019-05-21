@@ -15502,8 +15502,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 747547436}
   m_LocalRotation: {x: -0.0019679656, y: -0.040411197, z: 0.020430638, w: 0.99897236}
-  m_LocalPosition: {x: -1, y: 0, z: -0.0000000040745363}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalPosition: {x: -1.16, y: -0.16, z: -0.1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_Children: []
   m_Father: {fileID: 757624642}
   m_RootOrder: 0
@@ -15567,6 +15567,7 @@ GameObject:
   - component: {fileID: 757624642}
   - component: {fileID: 757624641}
   - component: {fileID: 757624640}
+  - component: {fileID: 757624639}
   m_Layer: 0
   m_Name: enemies
   m_TagString: lethal
@@ -15574,6 +15575,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &757624639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 757624638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 211f39e84cddb42aba78c707c140c0d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  bear: {fileID: 0}
+  mindistance: 0
 --- !u!50 &757624640
 Rigidbody2D:
   serializedVersion: 4
@@ -15619,7 +15635,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 757624638}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.95, y: 3.45, z: -0.21}
+  m_LocalPosition: {x: 3.95, y: 3.45, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 747547437}
