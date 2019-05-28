@@ -6,6 +6,8 @@ TagManager:
   tags:
   - lethal
   - ally
+  - enemy
+  - safeplace
   layers:
   - Default
   - TransparentFX

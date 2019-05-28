@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
@@ -39,7 +40,7 @@ public class player : MonoBehaviour
         penguinsn = 0;
         invunerability = 0;
     }
-
+    //
     private void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -51,62 +52,45 @@ public class player : MonoBehaviour
             invunerability -= Time.deltaTime;
             Debug.Log(invunerability);
         }
-            
     }
-
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
     void FixedUpdate()
     {
-        
-        //Debug.Log(ray);
-
-        
-
         if (target.x > transform.position.x)
         {
             animator.SetFloat("walk_left", 0f);
             animator.SetFloat("walk_right", 0.1f);
-
         }
         if (target.x < transform.position.x)
         {
             animator.SetFloat("walk_right", 0f);
             animator.SetFloat("walk_left", -0.1f);
-
         }
         if (target.x==transform.position.x && target.y==transform.position.y)
         {
             animator.SetFloat("walk_left", 0f);
             animator.SetFloat("walk_right", 0f);
         }
-        // transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
         MoveBody(rb2d, transform.position, target, Time.deltaTime*speed);
     }
-
-
-
+    //
     void MoveBody(Rigidbody2D body, Vector2 from, Vector2 to, float time)
     {
-        //body.MovePosition(Vector2.Lerp(from, to, time));
         body.MovePosition(Vector2.MoveTowards(from, to, time));
-
         Vector3Int lPos = tileMap.WorldToCell(self_coll.transform.position);
         Tile tile = tileMap.GetTile<Tile>(lPos);
-
         if (tile.sprite == ice)
         {
             Debug.Log(tile.sprite.ToString());
             StartCoroutine(IceBreaker(lPos));
         }
-
         else if(tile.sprite == water)
         {
             Debug.Log(tile.sprite.ToString());
             gameOver();
         }
-
     }
-
+    // 
     public IEnumerator IceBreaker(Vector3Int icePosition)
     {
         Tile tile = ScriptableObject.CreateInstance<Tile>();
@@ -114,49 +98,51 @@ public class player : MonoBehaviour
         tile.sprite = cracket_ice_1;
         tileMap.SetTile(icePosition, tile);
         tileMap.RefreshAllTiles();
-
-        
         yield return new WaitForSeconds(0.4f);
         tile.sprite = cracket_ice_2;
         tileMap.SetTile(icePosition, tile);
         tileMap.RefreshAllTiles();
-        
         yield return new WaitForSeconds(0.4f);
         tile.sprite = water;
         tileMap.SetTile(icePosition, tile);
         tileMap.RefreshAllTiles();
-        //tile.sprite = water;
-        //icePosition.y -= 1;//it's one tile off from y
-
     }
     void OnTriggerStay2D(Collider2D coll)
     {
-        if (coll.tag != "ally" && coll.tag != "Player") // si no es aliado
+        if (coll.tag != "ally" && coll.tag != "Player" && coll.tag!="safeplace") // si no es aliado
         {
             Debug.Log(coll.tag);
             Debug.Log(coll.name);
             gameOver();
         }
-        
+        if (coll.tag == "safeplace")
+        {
+            Debug.Log("CHECKPOINT");
+            safeplace();
+        }
     }
     //COLLIDING WITH AN A PENGUIN, IT WILL ATTACK THE PENGUIN TO THE PLAYER GAMEOBJECT.
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "ally")
         {
-
-           
+            if (slot1.transform.childCount <=0)
+            {
                 collision.gameObject.transform.position = slot1.transform.position;
                 collision.gameObject.transform.parent = slot1.transform;
-       
-           
-            penguinsn++;
-            actualizarHud(penguinsn);
-
-
-            update_vision(true);
-            collision.tag = "Player";
-
+                penguinsn++;
+                actualizarHud(penguinsn);
+                update_vision(true);
+                collision.tag = "Player";
+            }
+            else if (slot2.transform.childCount <=0 ) {
+                collision.gameObject.transform.position = slot2.transform.position;
+                collision.gameObject.transform.parent = slot2.transform;
+                penguinsn++;
+                actualizarHud(penguinsn);
+                update_vision(true);
+                collision.tag = "Player";
+            }
         }
     }
     //DESTROY THE PLAYER GAMEOBJECT AND DISPLAY GAMEOVER MESSAGE
@@ -167,7 +153,7 @@ public class player : MonoBehaviour
     }
     //UPDATE HUD WITH THE NUMBER ON PENGUINS
     void actualizarHud(int num) {
-        penguins.text = "Penguins " + num;
+        penguins.text = "x " + (num+1);
     }
     //TAKE DAMAGE WHEN COLLIDING WITH A ENEMY, IF THERE ARE NO PENGUINS PLAYER DIE.
     void takeDmg() {
@@ -178,7 +164,10 @@ public class player : MonoBehaviour
             penguinsn--;
             actualizarHud(penguinsn);
             update_vision(false);
-            Destroy(slot1);
+            if(slot1.transform.childCount==1)
+                Destroy(slot1.transform.GetChild(0).gameObject);
+            else if(slot2.transform.childCount==1)
+                Destroy(slot2.transform.GetChild(0).gameObject);
             invunerability = 2f; // 3 segundos de invunerablidad al sufrir dano
         }
     }
@@ -187,8 +176,6 @@ public class player : MonoBehaviour
     {
         if (collision.gameObject.tag == "enemy")
             takeDmg();
-        
-
         Debug.Log("collision con enemigo");
     }
     // UPDATE RADIUS OF VISION, TRUE = INCREASE, FALSE = DECREASE
@@ -198,5 +185,9 @@ public class player : MonoBehaviour
             shape.radius = shape.radius + 0.5f;
         else
             shape.radius = shape.radius - 0.5f;
+    }
+    // SAFEPLACE CODE
+    void safeplace() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
