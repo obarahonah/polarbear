@@ -177,6 +177,9 @@ public class player : MonoBehaviour
         if (collision.gameObject.tag == "enemy")
             takeDmg();
         Debug.Log("collision con enemigo");
+        if (collision.gameObject.tag == "ally")
+            Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
+
     }
     // UPDATE RADIUS OF VISION, TRUE = INCREASE, FALSE = DECREASE
     void update_vision(bool positive) {
