@@ -13,11 +13,12 @@ public class enemies_behaviour : MonoBehaviour
     public float speed;
 
     CapsuleCollider2D self_coll;
-
+    CircleCollider2D vision;
 
     public GameObject bear;
     public int mindistance;
-    private Vector3 moveDirection = Vector3.zero;
+
+
 
     public Sprite water;
     public Tilemap tileMap;
@@ -46,7 +47,7 @@ public class enemies_behaviour : MonoBehaviour
 
     void Start()
     {
-        rb2d = GetComponent<Rigidbody2D>();
+        //rb2d = GetComponent<Rigidbody2D>();
         self_coll = GetComponent<CapsuleCollider2D>();
         latestDirectionChangeTime = 0f;
         CalcuateNewMovementVector(false);
@@ -85,9 +86,24 @@ public class enemies_behaviour : MonoBehaviour
         }
 
         //move enemy: 
-        transform.position = new Vector2(transform.position.x + (movementPerSecond.x * Time.deltaTime),
-        transform.position.y + (movementPerSecond.y * Time.deltaTime));
+        transform.position = new Vector3(transform.position.x + (movementPerSecond.x * Time.deltaTime),
+        transform.position.y + (movementPerSecond.y * Time.deltaTime), -0.1f);
+        
+    }
 
+    private void FixedUpdate()
+    {
+        if (bear != null) {
+            if(Vector2.Distance(transform.position, bear.transform.position) <= 2)
+            {
+                speed = 2;
+            }
+            else if (Vector2.Distance(transform.position, bear.transform.position) >2)
+            {
+                speed = 1;
+            }
+        }
+            
     }
 
     void CalcuateNewMovementVector(bool back)
@@ -185,4 +201,5 @@ public class enemies_behaviour : MonoBehaviour
         //body.MovePosition(Vector2.MoveTowards(from, to, time));
 
     }
+
 }

@@ -22,6 +22,7 @@ public class player : MonoBehaviour
     public GameObject gameOverPanel;
     public Text gameOverText;
     public Text penguins;
+    public Text clock;
 
     public ParticleSystem vision;
 
@@ -50,7 +51,7 @@ public class player : MonoBehaviour
         }
         if (invunerability > 0) {
             invunerability -= Time.deltaTime;
-            Debug.Log(invunerability);
+            //Debug.Log(invunerability);
         }
     }
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
@@ -109,7 +110,7 @@ public class player : MonoBehaviour
     }
     void OnTriggerStay2D(Collider2D coll)
     {
-        if (coll.tag != "ally" && coll.tag != "Player" && coll.tag!="safeplace") // si no es aliado
+        if (coll.tag != "ally" && coll.tag != "Player" && coll.tag!="safeplace" && coll.tag!="enemy") // si no agua
         {
             Debug.Log(coll.tag);
             Debug.Log(coll.name);
@@ -121,7 +122,7 @@ public class player : MonoBehaviour
             safeplace();
         }
     }
-    //COLLIDING WITH AN A PENGUIN, IT WILL ATTACK THE PENGUIN TO THE PLAYER GAMEOBJECT.
+    //COLLIDING WITH AN A PENGUIN, IT WILL ATTACh THE PENGUIN TO THE PLAYER GAMEOBJECT.
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "ally")
@@ -150,6 +151,7 @@ public class player : MonoBehaviour
         Destroy(gameObject);
         gameOverPanel.SetActive(true);
         gameOverText.text = "Game Over";
+        clock.GetComponent<reloj>().pausar() ;
     }
     //UPDATE HUD WITH THE NUMBER ON PENGUINS
     void actualizarHud(int num) {
@@ -177,6 +179,9 @@ public class player : MonoBehaviour
         if (collision.gameObject.tag == "enemy")
             takeDmg();
         Debug.Log("collision con enemigo");
+
+        if (collision.gameObject.tag == "ally")
+            Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
     }
     // UPDATE RADIUS OF VISION, TRUE = INCREASE, FALSE = DECREASE
     void update_vision(bool positive) {
