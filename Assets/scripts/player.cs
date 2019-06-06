@@ -25,9 +25,7 @@ public class player : MonoBehaviour
     public Text clock;
 
     public ParticleSystem vision;
-
-    public GameObject slot1;
-    public GameObject slot2;
+    public List<GameObject> allies;
 
     private float invunerability;
     // Use this for initialization
@@ -40,6 +38,7 @@ public class player : MonoBehaviour
         self_coll = GetComponent<CircleCollider2D>();
         penguinsn = 0;
         invunerability = 0;
+        allies = new List<GameObject>();
     }
     //
     private void Update()
@@ -127,23 +126,23 @@ public class player : MonoBehaviour
     {
         if (collision.tag == "ally")
         {
-            if (slot1.transform.childCount <=0)
-            {
-                collision.gameObject.transform.position = slot1.transform.position;
-                collision.gameObject.transform.parent = slot1.transform;
+           
+                allies.Add(collision.gameObject);
+                collision.gameObject.transform.position = transform.position;
+                collision.gameObject.transform.parent = transform;
                 penguinsn++;
                 actualizarHud(penguinsn);
                 update_vision(true);
                 collision.tag = "Player";
-            }
-            else if (slot2.transform.childCount <=0 ) {
+            
+           /* else if (slot2.transform.childCount <=0 ) {
                 collision.gameObject.transform.position = slot2.transform.position;
                 collision.gameObject.transform.parent = slot2.transform;
                 penguinsn++;
                 actualizarHud(penguinsn);
                 update_vision(true);
                 collision.tag = "Player";
-            }
+            }*/
         }
     }
     //DESTROY THE PLAYER GAMEOBJECT AND DISPLAY GAMEOVER MESSAGE
@@ -166,10 +165,12 @@ public class player : MonoBehaviour
             penguinsn--;
             actualizarHud(penguinsn);
             update_vision(false);
-            if(slot1.transform.childCount==1)
-                Destroy(slot1.transform.GetChild(0).gameObject);
-            else if(slot2.transform.childCount==1)
-                Destroy(slot2.transform.GetChild(0).gameObject);
+            // if(slot1.transform.childCount==1)
+            //Destroy(slot1.transform.GetChild(0).gameObject);
+            //else if(slot2.transform.childCount==1)
+            //Destroy(slot2.transform.GetChild(0).gameObject);
+            Destroy(allies[allies.Count-1]);
+            allies.RemoveAt(allies.Count - 1);
             invunerability = 2f; // 3 segundos de invunerablidad al sufrir dano
         }
     }
@@ -180,7 +181,7 @@ public class player : MonoBehaviour
             takeDmg();
         Debug.Log("collision con enemigo");
 
-        if (collision.gameObject.tag == "ally")
+        if (collision.gameObject.tag == "Player")
             Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
     }
     // UPDATE RADIUS OF VISION, TRUE = INCREASE, FALSE = DECREASE

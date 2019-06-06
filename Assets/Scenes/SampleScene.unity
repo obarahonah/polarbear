@@ -476,6 +476,21 @@ PrefabInstance:
       propertyPath: bear
       value: 
       objectReference: {fileID: 1000836543}
+    - target: {fileID: 6047956349528630730, guid: 567cad62d1086c443841898ef72bc96a,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6047956349528630775, guid: 567cad62d1086c443841898ef72bc96a,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: -0.036097568
+      objectReference: {fileID: 0}
+    - target: {fileID: 6047956349528630775, guid: 567cad62d1086c443841898ef72bc96a,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.7099151
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 567cad62d1086c443841898ef72bc96a, type: 3}
 --- !u!1 &323335618
@@ -18712,8 +18727,7 @@ MonoBehaviour:
   penguins: {fileID: 708553838}
   clock: {fileID: 1468732750}
   vision: {fileID: 644733949}
-  slot1: {fileID: 64792889}
-  slot2: {fileID: 59428213}
+  allies: []
 --- !u!50 &1000836548
 Rigidbody2D:
   serializedVersion: 4
