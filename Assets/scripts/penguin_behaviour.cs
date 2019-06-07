@@ -28,10 +28,10 @@ public class penguin_behaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if (gameObject.transform.parent!= null)
+
+        if (gameObject.transform.parent != null)
         {
-            if (gameObject.transform.parent.tag == "ally")
+            if (gameObject.transform.parent.tag == "Player")
             {
                 // codigo original : https://forum.unity.com/threads/how-do-you-make-an-object-follow-your-exact-movement-but-delayed.512787/
 
@@ -49,7 +49,7 @@ public class penguin_behaviour : MonoBehaviour
 
                 if (storedPositions.Count > mindistance)
                 {
-                    MoveBody(rb2d, transform.position, storedPositions[0], Time.deltaTime * speed);
+                    MoveBody(rb2d, transform.position, storedPositions[1], Time.deltaTime * speed);
                     //transform.position = storedPositions[0]; //move
                     storedPositions.RemoveAt(0); //delete the position that player just move to
                 }
@@ -65,6 +65,11 @@ public class penguin_behaviour : MonoBehaviour
     {
         //body.MovePosition(Vector2.Lerp(from, to, time));
         body.MovePosition(Vector2.MoveTowards(from, to, time));
-       
+
+    }
+    
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        rb2d.velocity = Vector3.zero;
     }
 }

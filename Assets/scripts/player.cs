@@ -21,12 +21,12 @@ public class player : MonoBehaviour
 
     public GameObject gameOverPanel;
     public Text gameOverText;
+    public Text restartOverText;
     public Text penguins;
+    public Text clock;
 
     public ParticleSystem vision;
-
-    public GameObject slot1;
-    public GameObject slot2;
+    public List<GameObject> allies;
 
     private float invunerability;
     // Use this for initialization
@@ -39,6 +39,7 @@ public class player : MonoBehaviour
         self_coll = GetComponent<CircleCollider2D>();
         penguinsn = 0;
         invunerability = 0;
+        allies = new List<GameObject>();
     }
     //
     private void Update()
@@ -50,7 +51,7 @@ public class player : MonoBehaviour
         }
         if (invunerability > 0) {
             invunerability -= Time.deltaTime;
-            Debug.Log(invunerability);
+            //Debug.Log(invunerability);
         }
     }
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
@@ -109,7 +110,7 @@ public class player : MonoBehaviour
     }
     void OnTriggerStay2D(Collider2D coll)
     {
-        if (coll.tag != "ally" && coll.tag != "Player" && coll.tag!="safeplace") // si no es aliado
+        if (coll.tag != "ally" && coll.tag != "Player" && coll.tag!="safeplace" && coll.tag!="enemy") // si no agua
         {
             Debug.Log(coll.tag);
             Debug.Log(coll.name);
@@ -121,28 +122,28 @@ public class player : MonoBehaviour
             safeplace();
         }
     }
-    //COLLIDING WITH AN A PENGUIN, IT WILL ATTACK THE PENGUIN TO THE PLAYER GAMEOBJECT.
+    //COLLIDING WITH AN A PENGUIN, IT WILL ATTACh THE PENGUIN TO THE PLAYER GAMEOBJECT.
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "ally")
         {
-            if (slot1.transform.childCount <=0)
-            {
-                collision.gameObject.transform.position = slot1.transform.position;
-                collision.gameObject.transform.parent = slot1.transform;
+           
+                allies.Add(collision.gameObject);
+                collision.gameObject.transform.position = transform.position;
+                collision.gameObject.transform.parent = transform;
                 penguinsn++;
                 actualizarHud(penguinsn);
                 update_vision(true);
                 collision.tag = "Player";
-            }
-            else if (slot2.transform.childCount <=0 ) {
+            
+           /* else if (slot2.transform.childCount <=0 ) {
                 collision.gameObject.transform.position = slot2.transform.position;
                 collision.gameObject.transform.parent = slot2.transform;
                 penguinsn++;
                 actualizarHud(penguinsn);
                 update_vision(true);
                 collision.tag = "Player";
-            }
+            }*/
         }
     }
     //DESTROY THE PLAYER GAMEOBJECT AND DISPLAY GAMEOVER MESSAGE
@@ -150,6 +151,16 @@ public class player : MonoBehaviour
         Destroy(gameObject);
         gameOverPanel.SetActive(true);
         gameOverText.text = "Game Over";
+        restartOverText.text = "Restart Level";
+        clock.GetComponent<reloj>().pausar() ;
+    }
+    void winGame()
+    {
+        Destroy(gameObject);
+        gameOverPanel.SetActive(true);
+        gameOverText.text = "You Win!!";
+        restartOverText.text = "Start Over";
+        clock.GetComponent<reloj>().pausar();
     }
     //UPDATE HUD WITH THE NUMBER ON PENGUINS
     void actualizarHud(int num) {
@@ -164,10 +175,12 @@ public class player : MonoBehaviour
             penguinsn--;
             actualizarHud(penguinsn);
             update_vision(false);
-            if(slot1.transform.childCount==1)
-                Destroy(slot1.transform.GetChild(0).gameObject);
-            else if(slot2.transform.childCount==1)
-                Destroy(slot2.transform.GetChild(0).gameObject);
+            // if(slot1.transform.childCount==1)
+            //Destroy(slot1.transform.GetChild(0).gameObject);
+            //else if(slot2.transform.childCount==1)
+            //Destroy(slot2.transform.GetChild(0).gameObject);
+            Destroy(allies[allies.Count-1]);
+            allies.RemoveAt(allies.Count - 1);
             invunerability = 2f; // 3 segundos de invunerablidad al sufrir dano
         }
     }
@@ -177,9 +190,9 @@ public class player : MonoBehaviour
         if (collision.gameObject.tag == "enemy")
             takeDmg();
         Debug.Log("collision con enemigo");
-        if (collision.gameObject.tag == "ally")
-            Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
 
+        if (collision.gameObject.tag == "Player")
+            Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
     }
     // UPDATE RADIUS OF VISION, TRUE = INCREASE, FALSE = DECREASE
     void update_vision(bool positive) {
@@ -191,6 +204,12 @@ public class player : MonoBehaviour
     }
     // SAFEPLACE CODE
     void safeplace() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Debug.Log(SceneManager.GetActiveScene().buildIndex + " == " +(SceneManager.sceneCountInBuildSettings - 1));
+        if (SceneManager.GetActiveScene().buildIndex != (SceneManager.sceneCountInBuildSettings - 1 )) {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        } else
+        {
+            winGame();
+        }
     }
 }
