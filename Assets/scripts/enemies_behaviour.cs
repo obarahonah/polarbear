@@ -18,7 +18,8 @@ public class enemies_behaviour : MonoBehaviour
     public GameObject bear;
     public int mindistance;
 
-
+    public bool attackMode;
+    public bool centeredPosition;
 
     public Sprite water;
     public Tilemap tileMap;
@@ -51,49 +52,54 @@ public class enemies_behaviour : MonoBehaviour
         self_coll = GetComponent<CapsuleCollider2D>();
         latestDirectionChangeTime = 0f;
         CalcuateNewMovementVector(false);
+        attackMode = false;
+        centeredPosition = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         //moveDirection = new Vector3(0,0,0)
+        if (!attackMode)
+        {
+            Vector3Int lPos = tileMap.WorldToCell(self_coll.transform.position);
+            Tile tile = tileMap.GetTile<Tile>(lPos);
+            if (tile.sprite == water)
+            {
+                //Debug.Log("Water");
+                //Debug.Log(movementPerSecond);
+                latestDirectionChangeTime = Time.time;
+                CalcuateNewMovementVector(true);
+                //Debug.Log(movementPerSecond);
+                //movementPerSecond *= new Vector2(-1f, -1f);
+                //Destroy(gameObject);
+                //movementPerSecond = lastSaveMovementPerSecond;
+            } 
+             else 
+            {
+                //Debug.Log("Save");
+                //movementPerSecond *= new Vector2(-1f, -1f);
+                //lastSaveMovementPerSecond = movementPerSecond;
+            }
 
-        Vector3Int lPos = tileMap.WorldToCell(self_coll.transform.position);
-        Tile tile = tileMap.GetTile<Tile>(lPos);
-        if (tile.sprite == water)
-        {
-            //Debug.Log("Water");
-            //Debug.Log(movementPerSecond);
-            latestDirectionChangeTime = Time.time;
-            CalcuateNewMovementVector(true);
-            //Debug.Log(movementPerSecond);
-            //movementPerSecond *= new Vector2(-1f, -1f);
-            //Destroy(gameObject);
-            //movementPerSecond = lastSaveMovementPerSecond;
-        } 
-         else 
-        {
-            //Debug.Log("Save");
-            //movementPerSecond *= new Vector2(-1f, -1f);
-            //lastSaveMovementPerSecond = movementPerSecond;
-        }
-
-        //if the changeTime was reached, calculate a new movement vector
-        if (Time.time - latestDirectionChangeTime > directionChangeTime)
-        {
-            latestDirectionChangeTime = Time.time;
-            CalcuateNewMovementVector(false);
-        }
+            //if the changeTime was reached, calculate a new movement vector
+            if (Time.time - latestDirectionChangeTime > directionChangeTime)
+            {
+                latestDirectionChangeTime = Time.time;
+                CalcuateNewMovementVector(false);
+            }
 
         //move enemy: 
-        transform.position = new Vector3(transform.position.x + (movementPerSecond.x * Time.deltaTime),
-        transform.position.y + (movementPerSecond.y * Time.deltaTime), -0.1f);
+       
+            transform.position = new Vector3(transform.position.x + (movementPerSecond.x * Time.deltaTime),
+            transform.position.y + (movementPerSecond.y * Time.deltaTime), -0.1f);
+        }
         
     }
 
     private void FixedUpdate()
     {
-        if (bear != null) {
+        /*if (bear != null) {
             if(Vector2.Distance(transform.position, bear.transform.position) <= 2)
             {
                 speed = 2;
@@ -102,7 +108,7 @@ public class enemies_behaviour : MonoBehaviour
             {
                 speed = 1;
             }
-        }
+        }*/
             
     }
 

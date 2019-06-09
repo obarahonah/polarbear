@@ -7,6 +7,12 @@ using UnityEngine.UI;
 
 public class player : MonoBehaviour
 {
+
+    public float spriteBlinkingTimer = 0.0f;
+    public float spriteBlinkingMiniDuration = 0.1f;
+    public float spriteBlinkingTotalTimer = 0.0f;
+    public float spriteBlinkingTotalDuration = 3.0f;
+    public bool startBlinking = false;
     public float speed;             //Floating point variable to store the player's movement speed.
     private Rigidbody2D rb2d;       //Store a reference to the Rigidbody2D component required to use 2D Physics.
     private int penguinsn;
@@ -49,9 +55,15 @@ public class player : MonoBehaviour
         {
             target = ray.origin;
         }
-        if (invunerability > 0) {
+        if (invunerability > 0)
+        {
             invunerability -= Time.deltaTime;
             //Debug.Log(invunerability);
+        }
+
+        if (startBlinking)
+        {
+            SpriteBlinkingEffect();
         }
     }
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
@@ -67,12 +79,12 @@ public class player : MonoBehaviour
             animator.SetFloat("walk_right", 0f);
             animator.SetFloat("walk_left", -0.1f);
         }
-        if (target.x==transform.position.x && target.y==transform.position.y)
+        if (target.x == transform.position.x && target.y == transform.position.y)
         {
             animator.SetFloat("walk_left", 0f);
             animator.SetFloat("walk_right", 0f);
         }
-        MoveBody(rb2d, transform.position, target, Time.deltaTime*speed);
+        MoveBody(rb2d, transform.position, target, Time.deltaTime * speed);
     }
     //
     void MoveBody(Rigidbody2D body, Vector2 from, Vector2 to, float time)
@@ -82,12 +94,10 @@ public class player : MonoBehaviour
         Tile tile = tileMap.GetTile<Tile>(lPos);
         if (tile.sprite == ice)
         {
-            Debug.Log(tile.sprite.ToString());
             StartCoroutine(IceBreaker(lPos));
         }
-        else if(tile.sprite == water)
+        else if (tile.sprite == water)
         {
-            Debug.Log(tile.sprite.ToString());
             gameOver();
         }
     }
@@ -110,7 +120,7 @@ public class player : MonoBehaviour
     }
     void OnTriggerStay2D(Collider2D coll)
     {
-        if (coll.tag != "ally" && coll.tag != "Player" && coll.tag!="safeplace" && coll.tag!="enemy") // si no agua
+        if (coll.tag != "ally" && coll.tag != "Player" && coll.tag != "safeplace" && coll.tag != "enemy" && coll.tag!="rad") // si no agua
         {
             Debug.Log(coll.tag);
             Debug.Log(coll.name);
@@ -127,32 +137,33 @@ public class player : MonoBehaviour
     {
         if (collision.tag == "ally")
         {
-           
-                allies.Add(collision.gameObject);
-                collision.gameObject.transform.position = transform.position;
-                collision.gameObject.transform.parent = transform;
-                penguinsn++;
-                actualizarHud(penguinsn);
-                update_vision(true);
-                collision.tag = "Player";
-            
-           /* else if (slot2.transform.childCount <=0 ) {
-                collision.gameObject.transform.position = slot2.transform.position;
-                collision.gameObject.transform.parent = slot2.transform;
-                penguinsn++;
-                actualizarHud(penguinsn);
-                update_vision(true);
-                collision.tag = "Player";
-            }*/
+
+            allies.Add(collision.gameObject);
+            collision.gameObject.transform.position = transform.position;
+            collision.gameObject.transform.parent = transform;
+            penguinsn++;
+            actualizarHud(penguinsn);
+            update_vision(true);
+            collision.tag = "Player";
+
+            /* else if (slot2.transform.childCount <=0 ) {
+                 collision.gameObject.transform.position = slot2.transform.position;
+                 collision.gameObject.transform.parent = slot2.transform;
+                 penguinsn++;
+                 actualizarHud(penguinsn);
+                 update_vision(true);
+                 collision.tag = "Player";
+             }*/
         }
     }
     //DESTROY THE PLAYER GAMEOBJECT AND DISPLAY GAMEOVER MESSAGE
-    void gameOver() {
+    void gameOver()
+    {
         Destroy(gameObject);
         gameOverPanel.SetActive(true);
         gameOverText.text = "Game Over";
         restartOverText.text = "Restart Level";
-        clock.GetComponent<reloj>().pausar() ;
+        clock.GetComponent<reloj>().pausar();
     }
     void winGame()
     {
@@ -163,14 +174,16 @@ public class player : MonoBehaviour
         clock.GetComponent<reloj>().pausar();
     }
     //UPDATE HUD WITH THE NUMBER ON PENGUINS
-    void actualizarHud(int num) {
-        penguins.text = "x " + (num+1);
+    void actualizarHud(int num)
+    {
+        penguins.text = "x " + (num + 1);
     }
     //TAKE DAMAGE WHEN COLLIDING WITH A ENEMY, IF THERE ARE NO PENGUINS PLAYER DIE.
-    void takeDmg() {
-        if (penguinsn<=0 && invunerability<=0)
+    void takeDmg()
+    {
+        if (penguinsn <= 0 && invunerability <= 0)
             gameOver();
-        else if(invunerability<=0)
+        else if (invunerability <= 0)
         {
             penguinsn--;
             actualizarHud(penguinsn);
@@ -179,11 +192,16 @@ public class player : MonoBehaviour
             //Destroy(slot1.transform.GetChild(0).gameObject);
             //else if(slot2.transform.childCount==1)
             //Destroy(slot2.transform.GetChild(0).gameObject);
-            Destroy(allies[allies.Count-1]);
+            Destroy(allies[allies.Count - 1]);
             allies.RemoveAt(allies.Count - 1);
-            invunerability = 2f; // 3 segundos de invunerablidad al sufrir dano
+            invunerability = 3f; // 3 segundos de invunerablidad al sufrir dano
+            startBlinking = true;
+           
+
         }
     }
+
+
     // COLLISION WITH ENEMY
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -195,21 +213,52 @@ public class player : MonoBehaviour
             Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
     }
     // UPDATE RADIUS OF VISION, TRUE = INCREASE, FALSE = DECREASE
-    void update_vision(bool positive) {
+    void update_vision(bool positive)
+    {
         var shape = vision.shape;
-        if(positive)
+        if (positive)
             shape.radius = shape.radius + 0.5f;
         else
             shape.radius = shape.radius - 0.5f;
     }
     // SAFEPLACE CODE
-    void safeplace() {
-        Debug.Log(SceneManager.GetActiveScene().buildIndex + " == " +(SceneManager.sceneCountInBuildSettings - 1));
-        if (SceneManager.GetActiveScene().buildIndex != (SceneManager.sceneCountInBuildSettings - 1 )) {
+    void safeplace()
+    {
+        Debug.Log(SceneManager.GetActiveScene().buildIndex + " == " + (SceneManager.sceneCountInBuildSettings - 1));
+        if (SceneManager.GetActiveScene().buildIndex != (SceneManager.sceneCountInBuildSettings - 1))
+        {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        } else
+        }
+        else
         {
             winGame();
+        }
+    }
+
+    private void SpriteBlinkingEffect()
+    {
+        spriteBlinkingTotalTimer += Time.deltaTime;
+        if (spriteBlinkingTotalTimer >= spriteBlinkingTotalDuration)
+        {
+            startBlinking = false;
+            spriteBlinkingTotalTimer = 0.0f;
+            this.gameObject.GetComponent<SpriteRenderer>().enabled = true;   // according to 
+                                                                             //your sprite
+            return;
+        }
+
+        spriteBlinkingTimer += Time.deltaTime;
+        if (spriteBlinkingTimer >= spriteBlinkingMiniDuration)
+        {
+            spriteBlinkingTimer = 0.0f;
+            if (this.gameObject.GetComponent<SpriteRenderer>().enabled == true)
+            {
+                this.gameObject.GetComponent<SpriteRenderer>().enabled = false;  //make changes
+            }
+            else
+            {
+                this.gameObject.GetComponent<SpriteRenderer>().enabled = true;   //make changes
+            }
         }
     }
 }
