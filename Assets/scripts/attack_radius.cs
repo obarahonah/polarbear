@@ -19,17 +19,21 @@ public class attack_radius : MonoBehaviour
     void Update()
     {
 
-        if (Vector3.Distance(transform.position,enemy.transform.position ) < 0.5) {
+        if (Vector2.Distance(transform.position,enemy.transform.position ) < 0.5) {
             enemy.GetComponent<enemies_behaviour>().centeredPosition = true;
             goBack = false;
         }
         if (goBack) {
-            enemy.transform.position = Vector2.MoveTowards(enemy.transform.position, this.transform.position, speed * Time.deltaTime);
+            enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, this.transform.position, speed * Time.deltaTime);
         }
         if (enemy.GetComponent<enemies_behaviour>().attackMode == true) {
-            target = player.transform.position;
-            enemy.transform.position = Vector2.MoveTowards(enemy.transform.position, target, speed * Time.deltaTime);
+            if (player != null) {
+                target = player.transform.position;
+                enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, target, speed * Time.deltaTime);
+            }
+            
         }
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

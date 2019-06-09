@@ -112,6 +112,8 @@ MonoBehaviour:
   speed: 1
   bear: {fileID: 0}
   mindistance: 0
+  attackMode: 0
+  centeredPosition: 0
   water: {fileID: 21300000, guid: 10c06d5b82258534d9bb6e90dbe70041, type: 3}
   tileMap: {fileID: 0}
   currentDir: Down
