@@ -8,10 +8,13 @@ public class attack_radius : MonoBehaviour
     public GameObject enemy;
     public GameObject player;
     Vector2 target;
-    public float speed = 2f;
+    public float speed = 1.4f;
     public bool goBack;
+
+    
     void Start()
     {
+        
         goBack = false;
     }
 
@@ -23,17 +26,19 @@ public class attack_radius : MonoBehaviour
             enemy.GetComponent<enemies_behaviour>().centeredPosition = true;
             goBack = false;
         }
-        if (goBack) {
+        if (goBack || enemy.GetComponent<enemies_behaviour>().aggro >0) {
             enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, this.transform.position, speed * Time.deltaTime);
         }
-        if (enemy.GetComponent<enemies_behaviour>().attackMode == true) {
+        if (enemy.GetComponent<enemies_behaviour>().attackMode == true && enemy.GetComponent<enemies_behaviour>().aggro <=0) {
             if (player != null) {
                 target = player.transform.position;
                 enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, target, speed * Time.deltaTime);
             }
             
         }
-        
+
+
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -41,7 +46,7 @@ public class attack_radius : MonoBehaviour
         if (collision.tag == "Player") {
             enemy.GetComponent<enemies_behaviour>().attackMode = true;
             goBack = false;
-
+            
         }
         
     }

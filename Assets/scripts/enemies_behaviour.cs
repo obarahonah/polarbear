@@ -19,6 +19,7 @@ public class enemies_behaviour : MonoBehaviour
     public int mindistance;
 
     public bool attackMode;
+    public float aggro; //duracion de la agresion
     public bool centeredPosition;
 
     public Sprite water;
@@ -54,6 +55,7 @@ public class enemies_behaviour : MonoBehaviour
         CalcuateNewMovementVector(false);
         attackMode = false;
         centeredPosition = false;
+        aggro = 0;
     }
 
     // Update is called once per frame
@@ -94,7 +96,11 @@ public class enemies_behaviour : MonoBehaviour
             transform.position = new Vector3(transform.position.x + (movementPerSecond.x * Time.deltaTime),
             transform.position.y + (movementPerSecond.y * Time.deltaTime), -0.1f);
         }
-        
+        if (aggro > 0)
+        {
+            aggro -= Time.deltaTime;
+            Debug.Log(aggro);
+        }
     }
 
     private void FixedUpdate()
@@ -207,5 +213,9 @@ public class enemies_behaviour : MonoBehaviour
         //body.MovePosition(Vector2.MoveTowards(from, to, time));
 
     }
-
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.transform.tag == "Player")
+        aggro = 2f; // 2 segundos sin agresion
+    }
 }

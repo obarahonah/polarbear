@@ -380,7 +380,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1910694424}
   player: {fileID: 1000836543}
-  speed: 3
+  speed: 2
   goBack: 0
 --- !u!58 &278796376
 CircleCollider2D:
@@ -16420,7 +16420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1214668330}
   player: {fileID: 1000836543}
-  speed: 3
+  speed: 2
   goBack: 0
 --- !u!58 &1883698310
 CircleCollider2D:
@@ -16896,6 +16896,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sphere (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1988439964896958201, guid: 61a6d1b5057225640967ba6609a9d37a,
+        type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 1910694424}
+    - target: {fileID: 1988439964896958201, guid: 61a6d1b5057225640967ba6609a9d37a,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1000836543}
+    - target: {fileID: 1988439964896958201, guid: 61a6d1b5057225640967ba6609a9d37a,
+        type: 3}
+      propertyPath: speed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1988439964896958197, guid: 61a6d1b5057225640967ba6609a9d37a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16951,16 +16966,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1988439964896958201, guid: 61a6d1b5057225640967ba6609a9d37a,
-        type: 3}
-      propertyPath: enemy
-      value: 
-      objectReference: {fileID: 1910694424}
-    - target: {fileID: 1988439964896958201, guid: 61a6d1b5057225640967ba6609a9d37a,
-        type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 1000836543}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61a6d1b5057225640967ba6609a9d37a, type: 3}
 --- !u!1001 &4696986422516667667
@@ -17040,6 +17045,11 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1000836543}
+    - target: {fileID: 4696986420684705031, guid: cf3323c41a1273646bf60ba548f9ef7b,
+        type: 3}
+      propertyPath: speed
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf3323c41a1273646bf60ba548f9ef7b, type: 3}
 --- !u!1001 &6047956349281534440
