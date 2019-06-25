@@ -33,6 +33,10 @@ public class player : MonoBehaviour
 
     public ParticleSystem vision;
     public List<GameObject> allies;
+    
+    //sound
+    public AudioClip walksound;
+    private AudioSource source;
 
     private float invunerability;
     // Use this for initialization
@@ -46,6 +50,9 @@ public class player : MonoBehaviour
         penguinsn = 0;
         invunerability = 0;
         allies = new List<GameObject>();
+
+        //source = GetComponent<AudioSource>();
+        //source.Pause();
     }
     //
     private void Update()
@@ -54,6 +61,7 @@ public class player : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             target = ray.origin;
+            //source.Play();
         }
         if (invunerability > 0)
         {
@@ -73,6 +81,8 @@ public class player : MonoBehaviour
         {
             animator.SetFloat("walk_left", 0f);
             animator.SetFloat("walk_right", 0.1f);
+
+            
         }
         if (target.x < transform.position.x)
         {
@@ -179,7 +189,7 @@ public class player : MonoBehaviour
         penguins.text = "x " + (num + 1);
     }
     //TAKE DAMAGE WHEN COLLIDING WITH A ENEMY, IF THERE ARE NO PENGUINS PLAYER DIE.
-    void takeDmg()
+    public void takeDmg()
     {
         if (penguinsn <= 0 && invunerability <= 0)
             gameOver();

@@ -67,9 +67,17 @@ public class penguin_behaviour : MonoBehaviour
         body.MovePosition(Vector2.MoveTowards(from, to, time));
 
     }
-    
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         rb2d.velocity = Vector3.zero;
+        if (gameObject.transform.parent != null)
+        {
+            if (gameObject.transform.parent.tag == "Player")
+            {
+                if (collision.transform.tag == "enemy")
+                    bear.GetComponent<player>().takeDmg();
+            }
+        }
     }
 }
