@@ -1,0 +1,11 @@
+igloo: https://pixabay.com/es/vectors/igl%C3%BA-esquimal-casa-polares-hielo-28130/
+
+flag: https://icon-icons.com/es/icono/MapMarker-bandera-la-derecha-azul/21496
+
+polar bear with animations: 
+
+text mesh pro(clock): https://assetstore.unity.com/packages/essentials/beta-projects/textmesh-pro-84126
+
+clock font: https://www.dafont.com/alarm-clock.font
+
+wolf : https://savagelands.gamepedia.com/Dire_Wolf (CAMBIAR)
