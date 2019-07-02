@@ -8,4 +8,6 @@ text mesh pro(clock): https://assetstore.unity.com/packages/essentials/beta-proj
 
 clock font: https://www.dafont.com/alarm-clock.font
 
-wolf : https://savagelands.gamepedia.com/Dire_Wolf (CAMBIAR)
+wolf : https://opengameart.org/content/lpc-wolf-animation
+
+menu music: falta

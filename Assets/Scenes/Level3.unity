@@ -3595,6 +3595,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c3cede6ec6d70343ae07a5aeffc2ab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteBlinkingTimer: 0
+  spriteBlinkingMiniDuration: 0.1
+  spriteBlinkingTotalTimer: 0
+  spriteBlinkingTotalDuration: 3
+  startBlinking: 0
   speed: 2.5
   water: {fileID: 21300000, guid: 10c06d5b82258534d9bb6e90dbe70041, type: 3}
   ice: {fileID: 21300000, guid: 110cedb4206247940923fcfdba8b9bd9, type: 3}
@@ -3608,6 +3613,7 @@ MonoBehaviour:
   clock: {fileID: 1418207399}
   vision: {fileID: 1822486484}
   allies: []
+  walksound: {fileID: 0}
 --- !u!95 &1265705706
 Animator:
   serializedVersion: 3
@@ -3921,7 +3927,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb9d0132241d7b942a118aa1cd3ea433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tiempoInicial: 30
+  tiempoInicial: 45
   escalaDelTiempo: -1
   vision: {fileID: 1822486484}
 --- !u!114 &1418207399

@@ -585,6 +585,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1203388638}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &256731390 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 868523523031483902, guid: 3c80902bdf3adc640bea77f6765f0cfe,
+    type: 3}
+  m_PrefabInstance: {fileID: 1203388638}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &260409304
 GameObject:
   m_ObjectHideFlags: 0
@@ -807,9 +813,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb9d0132241d7b942a118aa1cd3ea433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tiempoInicial: 30
+  tiempoInicial: 45
   escalaDelTiempo: -1
-  vision: {fileID: 0}
+  vision: {fileID: 256731390}
 --- !u!114 &478237822
 MonoBehaviour:
   m_ObjectHideFlags: 0
