@@ -2,12 +2,12 @@ igloo: https://pixabay.com/es/vectors/igl%C3%BA-esquimal-casa-polares-hielo-2813
 
 flag: https://icon-icons.com/es/icono/MapMarker-bandera-la-derecha-azul/21496
 
-polar bear with animations: 
+polar bear with animations: https://opengameart.org/content/polar-bear-idle-and-movement
 
-text mesh pro(clock): https://assetstore.unity.com/packages/essentials/beta-projects/textmesh-pro-84126
+text mesh pro(clock UI): https://assetstore.unity.com/packages/essentials/beta-projects/textmesh-pro-84126
 
 clock font: https://www.dafont.com/alarm-clock.font
 
 wolf : https://opengameart.org/content/lpc-wolf-animation
 
-menu music: falta
+menu music: https://www.youtube.com/watch?v=ELb41JMAE6k&list=PLuUOQ9D9oCVh7V3auw8QiQn4Nt02Ey1f6&index=83
